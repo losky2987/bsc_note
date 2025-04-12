@@ -165,11 +165,107 @@ $G = (\Sigma, N, S, P)$ is a grammar, and $u$ and $v$ are words in $(N \cup \Sig
             S_1 &\vdash_{G_1}^3 aabb
         \end{aligned}
     \]
+    \lineindent the derivation for $G_1$ is:
+    \[
+        S_1 \vdash_{G_1} a S_1 b \vdash_{G_1} aa S_1 bb \vdash_{G_1} aabb \Rightarrow aabb \in L(G_1).
+    \]
+    Apparently $G_1$ generates the language $L(G_1) = \{a^nb^n \mid n \geq 0\}$.
 \end{tcolorbox}
 \begin{tcolorbox}[title=example 2,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    $G_2' = (\Sigma_2, \Gamma_2', S_2', R_2')$ is a grammar, where:
+    \begin{itemize}
+        \item termimal alphabet is $\Sigma_2 = \{a,b,c\}$.
+        \item non-terminal alphabet is $\Gamma_2' = \{S_2', B,C\}$.
+        \item the set of rules is \[
+            \begin{aligned}
+                R_2' = \{ \quad & S_2' \to aB, \\[1ex]
+                & B \to bC, \\[1ex]
+                & C \to c S_2' \mid c \quad \}
+            \end{aligned}
+        \]
+        \item $R_2' = \{S_2' \to aB, B \to bC, C \to cS_2', C \to c\}$.
+        \item Apparently $G_2'$ generates the language $L(G_2') = \{(abc)^n \mid n \geq 1\}$.
+    \end{itemize}
 \end{tcolorbox}
-
-
+\begin{tcolorbox}[title=example 3,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    $G_2 = (\Sigma_2, \Gamma_2, S_2, R_2)$ is a grammar, where:
+    \begin{itemize}
+        \item terminal alphabet is $\Sigma_2 = \{a,b,c\}$.
+        \item non-terminal alphabet is $\Gamma_2 = \{S_2, B,C\}$.
+        \item the set of rules is \[
+            \begin{aligned}
+                R_2 = \{ \quad & S_2 \to a S_2 BC \mid aBC, \\[1ex]
+                & CB \to BC, \\[1ex]
+                & aB \to ab, \\[1ex]
+                & bB \to bb, \\[1ex]
+                & bC \to bc, \\[1ex]
+                & cC \to cc \quad \}.
+            \end{aligned}
+            \]
+        \item $R_2 = \{S_2 \to a S_2 BC, S_2 \to aBC, CB \to BC, aB \to ab, bB \to bb, bC \to bc, cC \to cc\}$.
+    \end{itemize}
+    A derivation for $G_2$ is:
+    \[
+        \begin{aligned}
+            S_2 &\vdash_{G_2} a S_2 BC  &&\vdash_{G_2} aa S_2 BCBC &&\vdash_{G_2} aaaBCBCBC \\[1ex]
+                &\vdash_{G_2} aaaBBCCBC &&\vdash_{G_2} aaaBBCBCC   &&\vdash_{G_2} aaaBBBCCC \\[1ex]
+                &\vdash_{G_2} aaabBBCCC &&\vdash_{G_2} aaabbBCCC   &&\vdash_{G_2} aaabbbCCC \\[1ex]
+                &\vdash_{G_2} aaabbbcCC &&\vdash_{G_2} aaabbbccC   &&\vdash_{G_2} aaabbbccc
+        \end{aligned}
+    \]
+    $\Rightarrow aaabbbccc \in L(G_2)$. \\
+    \lineindent the generated language is: $L(G_2) = \{a^nb^nc^n \mid n \geq 1\}$.
+\end{tcolorbox}
+\begin{tcolorbox}[title=example 4,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    $G_3 = (\Sigma_3,\Gamma_3,S_3,R_3)$ is a grammar, where:
+    \begin{itemize}
+        \item terminal alphabet is $\Sigma_3 = \{*,+,(,),a\}$.
+        \item non-terminal alphabet is $\Gamma_3 = \{S_3\}$.
+        \item the set of rules is \[
+            R_3 = \{S_3 \to S_3 + S_3 \mid S_3 * S_3 \mid (S_3) \mid a\}
+        \]
+    \end{itemize}
+    A derivation for $G_3$ is:
+    \[
+        \begin{aligned}
+            S_3 &\vdash_{G_3} S_3 + S_3 &&\vdash_{G_3} S_3 * S_3 + S_3 \\[1ex]
+                &\vdash_{G_3} (S_3) * S_3 + S_3 &&\vdash_{G_3} (S_3 + S_3) * S_3 + S_3 \\[1ex]
+                &\vdash_{G_3} \cdots &&\vdash_{G_3} (a + a) * a + a
+        \end{aligned}
+    \]
+    \lineindent $\Rightarrow (a + a) * a + a \in L(G_3)$. \\
+    \lineindent $G_3$ generates the language of all nested bracket expressions with the operations $+$ and $*$ and a character $a$.
+\end{tcolorbox}
+Notes:
+\begin{itemize}
+    \item the process of deriving words is inherently non-deterministic, because in general more than one rule can be applied in a derivation step.
+    \item different grammars can produce the same language.
+    \item in fact, every language that can be defined by a grammar has an infinite number of grammars that generate it.
+    \item that is, a grammar is a syntactic object that generates a semantic object, namely its language.
+    \item there are many different notations for grammars.
+\end{itemize}
+\subsection{Chomsky hierarchy 乔姆斯基层次}
+\begin{tcolorbox}[title=Chomsky hierarchy,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    $G = (\Sigma,N,S,P)$ is a grammar, where:
+    \begin{itemize}
+        \item $G$ is type 0 grammar, aka unrestricted grammar, where $P$ is a set of rules with $|p| \geq 1$ and $|q| \geq 1$.
+        \item $G$ is type 1 grammar, aka context-sensitive grammar, where $P$ is a set of rules $p \to q$ in $P$ with $|p| \leq |q|$.
+        \item $G$ is type 2 grammar, aka context-free grammar, where $P$ is a set of rules $p \to q$ in $P$ with $p \in N$.
+        \item $G$ is type 3 grammar, aka regular grammar, where $P$ is a set of rules $p \to q$ in $P$ with $p \in N$ and $q \in \Sigma \cup \Sigma N$.
+        \item a language $A \subseteq \Sigma^*$ is from type $i \in \{0,1,2,3\}$, if there exists a type-$i$ grammar $G$ such that $L(G) = A$.
+        \item the Chomsky hierarchy consists of the four language classes: \[
+            \mathfrak{L}_i = \{L(G) \mid G \text{ is type } i \text{ grammar}\}, \text{with } i \in \{0,1,2,3\}.
+        \]
+        \item common names:
+        \subitem $\mathfrak{L}_0$: recursively enumerable languages, aka Turing machines.
+        \subitem $\mathfrak{L}_1$: context-sensitive languages, aka linear bounded automata. (CS)
+        \subitem $\mathfrak{L}_2$: context-free languages, aka pushdown automata. (CF)
+        \subitem $\mathfrak{L}_3$: regular languages, aka finite automata. (REG)
+    \end{itemize}
+\end{tcolorbox}
+Fact: $REG \subseteq CF \subseteq CS \subseteq \mathfrak{L}$ \\
+\lineindent equivalent: $type-3 \subseteq type-2 \subseteq type-1 \subseteq type-0 \subseteq all language$ \\
+page 75
 
 % 正文结束
 
