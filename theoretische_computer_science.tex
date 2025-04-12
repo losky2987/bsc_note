@@ -1,0 +1,179 @@
+\documentclass[a4paper,11pt,utf8]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{CJKutf8}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titling}
+\usepackage{enumitem}
+\usepackage{mdframed}
+\usepackage{tcolorbox}
+
+\renewcommand{\contentsname}{\text{Contents 目录}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\newcommand{\newindent}{\\ \hspace*{\parindent}}
+\newcommand{\lineindent}{\hspace*{\parindent}}
+
+\geometry{
+    left=1cm,
+    right=1cm,
+    top=1.5cm,
+    bottom=1.5cm,
+    includehead,
+    includefoot
+}
+
+\title{\text{Theoretical Computer Science Summary}}
+\author{玄风}
+\newcommand{\copyrighttext}{\text{©玄风 2025 ALL RIGHTS RESERVED.}}
+\date{}
+
+\setlength{\headheight}{13.6pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{\nouppercase{\leftmark}}
+\fancyfoot[L]{\text{Theoretical Computer Science}}
+\fancyfoot[R]{\text{Updated: \today}}
+
+
+\pretitle{\begin{center}\Huge\bfseries}
+    \posttitle{\par\end{center}}
+    \preauthor{\vfill\begin{center}\large}
+    \postauthor{
+      \\[1em]
+      \normalfont\scriptsize \copyrighttext
+      \end{center}
+    }
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+\pagenumbering{roman}
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1} 
+
+% 正文从此开始
+
+\section{Basic Definition 基础概念}
+\subsection{Alphabet, word and Language 字母表、单词和语言}
+\begin{itemize}
+    \item Alphabet $\Sigma$: $\Sigma_1 = \{a,b,c\}$, $\Sigma_2 = \{0,1\}$.
+    \item word over $\Sigma$: $w_1 = aabc$ and $w_2 = cbac$ over $\Sigma_1$, $w_3 = 0001$ and $w_4 = 1001$ over $\Sigma_2$.
+    \item word length $|w|$: $|w_1| = 4$, $|w_2| = 4$, $|w_3| = 4$, $|w_4| = 4$.
+    \item Empty word $\lambda$: $\lambda$ is not a alphabet symbol, $|\lambda| = 0$.
+    \item Set of all words over $\Sigma$ is $\Sigma^*$: $\{0,1\}^* = \{\lambda, 0, 1, 00, 01, 10, 11, 000, \dots\}$
+    \item Formal language over $\Sigma$ is a subset of $\Sigma^*$: $L = \{00,10\} \subseteq \Sigma^* = \{0,1\}^*$.
+    \item Empty language $\emptyset$ is a language without word: $\emptyset \neq \{\lambda\}$.
+    \item Cardinality of a language $||L||$ is the number of word from $L$: $||L|| = 2$ for $L = \{00,10\}$, $||L|| = 0$ for $\emptyset$.
+\end{itemize}
+\subsection{Operations of words and languages 单词和语言的运算}
+A and B are two languages over $\Sigma$. Aka $A,B \subseteq \Sigma^*$.
+\begin{itemize}
+    \item Union: $A \cup B = \{x \in \Sigma^* | x \in A \text{ or } x \in B\}$, e.g.: $\{10,1\} \cup \{1,0\} = \{10,1,0\}$.
+    \item Intersection: $A \cap B = \{x \in \Sigma^* | x \in A \text{ and } x \in B\}$, e.g.: $\{10,1\} \cap \{1,0\} = \{1\}$.
+    \item Difference: $A - B = \{x \in \Sigma^* | x \in A \text{ and } x \notin B\}$, e.g.: $\{10,1\} - \{1,0\} = \{10\}$.
+    \item Complement: $\overline{A} = \Sigma^* - A = \{x \in \Sigma^* | x \notin A\}$, e.g.: $\overline{\{10,1\}} = \{0,1\}^* - \{10,1\} = \{\lambda,0,00,11,01,000, \dots\}$.
+    \item Concatenation from words $u,v \in \Sigma^*$ is a word $uv \in \Sigma^*$, it defined:
+    \subitem $u=v=\lambda$, $uv=vu=\lambda$.
+    \subitem $v=\lambda$, $uv=u$.
+    \subitem $u=\lambda$, $uv=v$.
+    \subitem $u=u_1 u_2 \dots u_n$ and $v=v_1 v_2 \dots v_m$ with $u_i,v_i \in \Sigma$, so: $uv = u_1 u_2 \dots u_n v_1 v_2 \dots v_m$.
+    \subitem e.g.: $u=01$, $v=10$, $uv=0110$, $vu=1001$.
+    \subitem the language is: $AB = \{ab | a \in A \text{ and } b \in B\}$, e.g.: $\{10,1\}\{1,0\} = \{101,100,11,10\}$.
+    \item Language iteration $A \subseteq \Sigma^*$ aka Kleene star is the language $A^*$, it defined: 
+    \subitem $A^0 = \{\lambda\}$.
+    \subitem $A^n = AA^{n-1}$.
+    \subitem $A^* = \bigcup_{n \geq 0} A^n$
+    \subitem $\lambda$-free iteration of A is $A^+ = \bigcup_{n \geq 1} A^n$.
+    \subitem It exists: $A^+ \cup \{\lambda\} = A^*$, and it not exists: $A^+ = A^* - \{\lambda\}$.
+    \subitem e.g.:
+    \subitem $\{10,1\}^0 = \{\lambda\}$.
+    \subitem $\{10,1\}^1 = \{10,1\}$.
+    \subitem $\{10,1\}^2 = \{10,1\}\{10,1\} = \{1010,101,110,11\}$.
+    \subitem $\{10,1\}^3 = \{10,1\}\{10,1\}^2 = \{101010, \dots\}$.
+    \item Mirror image operation for a word $u = u_1 u_2 \cdots u_n \in \Sigma^*$ is defined with: $sp(u) = u_n \cdots u_2 u_1$, e.g.: $sp(0100101) = 1010010$.
+    \item Language mirroring $A \subseteq \Sigma^*$ is defined with: $sp(A) = \{sp(w)|w \in A\}$, e.g.: $sp(\{100,011\}) = \{001,110\}$.
+    \item Partial word relation of $\Sigma^*$ is defined with $u \sqsubseteq v \Longleftrightarrow (\exists v_1,v_2 \in \Sigma^*)[v_1 u v_2 = v]$.
+    \subitem It exists $u \sqsubseteq v$, so $u$ is a partial word of $v$, aka infix. e.g.: $100 \sqsubseteq 1010010$.
+    \item Initial word relation of $\Sigma^*$ is defined with $u \sqsubseteq_a v \Longleftrightarrow (\exists w \in \Sigma^*)[uw = v]$.
+    \subitem It exists $u \sqsubseteq_a v$, so $u$ is a initial word of $v$, aka prefix. e.g.: $101 \sqsubseteq_a 1010010$.
+\end{itemize}
+\subsection{Grammar 语法}
+Grammar is a quadraple $G = (\Sigma, N, S, P)$, where: 
+\begin{itemize}
+    \item $\Sigma$ is a alphabet, called terminal symbols.
+    \item $N$ is a set of non-terminal symbols, $N \cap \Sigma = \emptyset$.
+    \item $S \in N$ is a start symbol.
+    \item $P \subseteq (N \cup \Sigma)^+ \times (N \cup \Sigma)^*$ is a terminal set of production rules.
+\end{itemize}
+\lineindent $(N \cup \Sigma)^+ = (N \cup \Sigma)^* - \{\lambda\}$.  \newindent
+Rules $(p,q)$ in $P$ are defined with $p \to q$. \newindent
+For grammar rules with same links side $A \in N$ has:
+\[
+\begin{array}{c}
+A \to q_1 \mid q_2 \mid \cdots \mid q_n \\[1ex]
+\text{\small BNF(Backus-Naur Form) notation}
+\end{array}
+\quad \text{ instead of } \quad
+\begin{aligned}
+A &\to q_1 \\
+A &\to q_2 \\
+& \vdots \\
+A &\to q_n
+\end{aligned}
+\]
+\subsection{Derivation relation, language of grammar 语法的推导关系和语言}
+$G = (\Sigma, N, S, P)$ is a grammar, and $u$ and $v$ are words in $(N \cup \Sigma)^*$
+\begin{itemize}
+    \item Immediate derivation relation $\vdash$ is defined with: $u \vdash_G v \Longleftrightarrow u=xpz, v=xqz$, where $x,z \in (N \cup \Sigma)^*$ and $p \to q$ is a rule in $P$.
+    \item By applying $n$ times of $\vdash_G$ has $\vdash_G^n$: $u = x_0 \vdash_G x_1 \vdash_G \cdots \vdash_G x_n = v$ for $n \geq 0$ and for a sequence from words $x_0, x_1, \dots, x_n \in (\Sigma \cup N)^*$, specially is $u \vdash_G^0 u$.
+    \item The sequence $(x_0, x_1, \dots, x_n)$, $x_i \in (\Sigma \cup N)^*$, $x_0 = S$ and $x_n \in \Sigma^*$ is called a derivation tree, when $x_0 \vdash_G x_1 \vdash_G \cdots \vdash_G x_n$.
+    \item Defined $\vdash_G^* = \Cup_{n \geq 0} \vdash_G^n$. It can be shouwn that $\vdash_G^*$ is the reflexive and transitive closure of $\vdash_G$, i.e. the smallest binary relation that is reflexive and transitive and encompasses $\vdash_G$.
+    \item The language generated by the grammar $G$ is defined with: $L(G) = \{w \in \Sigma^* \mid S \vdash_G^* w\}$.
+    \item Two grammars $G_1$ and $G_2$ are equivalent if $L(G_1) = L(G_2)$.
+\end{itemize}
+\subsection{Grammar, derivation, generated language 语法、推导和生成语言}
+\begin{tcolorbox}[title=example 1,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    $G_1 = (\Sigma_1, \Gamma_1, S_1, R_1)$ is a grammar, where:
+    \begin{itemize}
+        \item terminal symbols $\Sigma_1 = \{a,b\}$.
+        \item non-terminal symbols $\Gamma_1 = \{S_1\}$.
+        \item the set of rules $R_1 = \{S_1 \to a S_1 b \mid \lambda\}$.
+    \end{itemize}
+    \lineindent the step of derivation for $G_1$ is:
+    \[
+        \begin{aligned}
+            S_1 &\vdash_{G_1} a S_1 b \vdash_{G_1} a a S_1 b b \vdash_{G_1} aabb \\[1ex]
+            S_1 &\vdash_{G_1}^1 a S_1 b \\[1ex]
+            S_1 &\vdash_{G_1}^2 aa S_1 bb \\[1ex]
+            S_1 &\vdash_{G_1}^3 aabb
+        \end{aligned}
+    \]
+\end{tcolorbox}
+\begin{tcolorbox}[title=example 2,colback=white,colframe=black,width=\textwidth,arc=0pt]
+\end{tcolorbox}
+
+
+
+% 正文结束
+
+% \bibliographystyle{plain}
+% \bibliography{references} % Add a references.bib file for bibliography
+
+\end{document}
