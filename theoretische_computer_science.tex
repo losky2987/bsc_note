@@ -264,8 +264,55 @@ Notes:
     \end{itemize}
 \end{tcolorbox}
 Fact: $REG \subseteq CF \subseteq CS \subseteq \mathfrak{L}$ \\
-\lineindent equivalent: $type-3 \subseteq type-2 \subseteq type-1 \subseteq type-0 \subseteq all language$ \\
-page 75
+\lineindent equivalent: $type-3 \subseteq type-2 \subseteq type-1 \subseteq type-0 \subseteq \text{all language}$ \\
+\begin{tcolorbox}[title=example,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    \begin{itemize}
+        \item obviously, the $G_2$ and $G_3$ are context-sensitive grammars, because the length of the left-hand side of each production rule is less than or equal to the length of the right-hand side.
+        \item the grammar $G_1$ has the rules $S_1 \to \lambda$ and is not context-sensitive because $\mid S_1 \mid = 1 > 0 = \mid \lambda \mid$ by definition (cf. "special rule for the empty word"). since $G_1$ is a grammar, $G_1$ is a type-0 grammar.
+        \item obviously, the grammar $G_3$ from the previous example is even context-free.
+    \end{itemize}
+\end{tcolorbox}
+\subsection{Special rules for the empty word 空字的特殊规则}
+To include the empty word in languages of type-$i$ grammars for $i \in \{1,2,3\}$, make the following agreement:
+\begin{itemize}
+    \item the rule $S \to \lambda$ is the only shortening rule allowed for grammars of type $1,2,3$.
+    \item if the rule $S \to \lambda$ occurs, $S$ must not occur on the right-hand side of any rule.
+\end{itemize}
+\lineindent This is not a restriction on the general public, because: \\ \lineindent
+if there are rules in $p$ with $S$ on the right-hand side, we can change the rule set $P$ to the new rule set $P'$ as follows:
+\begin{itemize}
+    \item 1. in all rules of the form $S \to u$ from $P$ with $u \in (N \cup \Sigma)^*$, each occurrence of $S$ in $u$ is replaced by a new non-terminal $S'$.
+    \item 2. in addition, $P'$ contains all rules from $P$, with $S$ replaced by $S'$.
+    \item 3. the rule $S \to \lambda$ is added.
+\end{itemize}
+\lineindent The grammar $G' = (\Sigma, N \cup \{S'\}, S, P')$ modified in this way is (except for $S \to \lambda$) of the same type as $G$ and satisfies $L(G') = L(G) \cup \{\lambda\}$.
+\begin{tcolorbox}[title=example,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    Given a grammar $G = (\Sigma, N, S, P)$ with:
+    \begin{itemize}
+        \item terminal alphabet $\Sigma = \{a,b\}$.
+        \item non-terminal alphabet $N = \{S\}$.
+        \item the set of rules $P = \{S \to aSb \mid ab\}$.
+    \end{itemize}
+    it's easy to see that $G$ is a context-free grammar and the language $L = \{a^nb^n \mid n \geq 1\}$ generated, i.e. $L(G) = L$. \newindent
+    now modify the grammar $G$ according to the special rule for the empty word in order to obtain a context-free grammar for the language $\{a^nb^n \mid n \geq 0\} = L \cup \{\lambda\}$. \newindent
+    so we got a context-free grammar $G' = (\Sigma, \{S,S'\}, S, P')$ with:
+    \[
+        \begin{aligned}
+            P' = \{ \quad &S \to a S' b \mid ab, &&\text{according 1.}\\[1ex]
+            &S' \to a S' b \mid ab, &&\text{according 2.}\\[1ex]
+            &S \to \lambda \quad\}. &&\text{according 3.}
+        \end{aligned}
+    \]
+    \lineindent and $L(G') = L(G) \cup \{\lambda\}$.
+\end{tcolorbox}
+
+
+
+
+
+
+
+
 
 % 正文结束
 
