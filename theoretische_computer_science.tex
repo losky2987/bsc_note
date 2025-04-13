@@ -14,6 +14,8 @@
 \usepackage{enumitem}
 \usepackage{mdframed}
 \usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{forest}
 
 \renewcommand{\contentsname}{\text{Contents 目录}}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -263,8 +265,8 @@ Notes:
         \subitem $\mathfrak{L}_3$: regular languages, aka finite automata. (REG)
     \end{itemize}
 \end{tcolorbox}
-Fact: $REG \subseteq CF \subseteq CS \subseteq \mathfrak{L}$ \\
-\lineindent equivalent: $type-3 \subseteq type-2 \subseteq type-1 \subseteq type-0 \subseteq \text{all language}$ \\
+Fact: REG $\subseteq$ CF $\subseteq$ CS $\subseteq \mathfrak{L}$ \newindent
+equivalent: type-3 $\subseteq$ type-2 $\subseteq$ type-1 $\subseteq$ type-0 $\subseteq$ all language
 \begin{tcolorbox}[title=example,colback=white,colframe=black,width=\textwidth,arc=0pt]
     \begin{itemize}
         \item obviously, the $G_2$ and $G_3$ are context-sensitive grammars, because the length of the left-hand side of each production rule is less than or equal to the length of the right-hand side.
@@ -305,8 +307,68 @@ if there are rules in $p$ with $S$ on the right-hand side, we can change the rul
     \]
     \lineindent and $L(G') = L(G) \cup \{\lambda\}$.
 \end{tcolorbox}
-
-
+\subsection{Syntex tree 语法树}
+To visualize derivation of words in grammars of type 2 or 3, use a syntax tree defined as follows:
+\begin{itemize}
+    \item $G = (\Sigma, N, S, P)$ is a grammar from type 2 or 3, and $S = w_0 \vdash_G w_1 \vdash_G \cdots \vdash_G w_n = w$ is a derivation of $w \in L(G)$.
+    \item the root (i.e. level 0) of the syntax tree is the start symbol $S$.
+    \item level $i$: if, because of the rule $A \to z$ in the $i$-th derivation step ($w_{i-1} \vdash_G w_i$), the non-terminal $A$ in $w_{i-1}$ is replaced by the subword $z$ of $w_i$, the node $A$ in the syntax tree has $\mid z \mid$ sons, which are labeled from left to right with the symbols from $z$.
+    \item the leaves of the tree, read form left to right, give $w$.
+\end{itemize}
+\begin{tcolorbox}[title=example,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    \begin{forest}
+        [$S_3$
+            [$S_3$
+                [$S_3$
+                    [$\text{(}$]
+                    [$S_3$
+                        [$S_3$ [a]]
+                        [+]
+                        [$S_3$ [a]]
+                    ]
+                    [$\text{)}$]
+                ]
+                [$*$]
+                [$S_3$ [a]]
+            ]
+            [+]
+            [$S_3$ [a]]
+        ]
+    \end{forest}
+    the syntex for the derivation of words $(a+a)*a+a$ in the type-2 grammar $G_3$
+\end{tcolorbox}
+\subsection{Ambiguous grammar 模棱两可的语法}
+Definition:
+\begin{itemize}
+    \item a grammar $G$ is called ambiguous if there is a word $w \in L(G)$ that has two different syntax trees.
+    \item a language $A$ is called inherently ambiguous if every grammar $G$ with $A = L(G)$ is ambiguous.
+\end{itemize}
+\begin{tcolorbox}[title=example,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    \begin{forest}
+        [$S_3$
+            [$S_3$
+                [$\text{(}$]
+                [$S_3$
+                    [$S_3$
+                        [$S_3$ [a]]
+                        [+]
+                        [$S_3$ [a]]
+                    ]
+                ]
+                [$\text{)}$]
+            ]
+            [$*$]
+            [$S_3$
+                [$S_3$ [a]]
+                [+]
+                [$S_3$ [a]]
+            ]
+        ]
+    \end{forest}
+    \newline
+    \text{another syntax tree for the derivation of word $(a+a)*a+a$ in the type-2 grammar $G_3$.}
+\end{tcolorbox}
+\section{???}
 
 
 
