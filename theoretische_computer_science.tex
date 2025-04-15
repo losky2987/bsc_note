@@ -346,11 +346,48 @@ Definition:
     \newline
     \text{another syntax tree for the derivation of word $(a+a)*a+a$ in the type-2 grammar $G_3$.}
 \end{tcolorbox}
-\section{???}
-
-
-
-
+\section{Regular languages 正则语言}
+\subsection{Finite automata 有限自动机}
+A deterministic finite automation (DFA) is a quintuple $M = (\Sigma,Z,\delta,z_0,F)$, where:
+\begin{itemize}
+    \item $\Sigma$ is a finite set of symbols, called the input alphabet.
+    \item $Z$ is a finite set of states with $\Sigma \cap Z = \emptyset$.
+    \item $\delta: Z \times \Sigma \to Z$ is a transition function.
+    \item $z_0 \in Z$ is the initial state.
+    \item $F \subseteq Z$ is the set of final states.
+\end{itemize}
+\lineindent Note: Also allow partially defined transition functions. By adding an additional state, such functions can easily be defined completely.
+\begin{tcolorbox}[title=example,colback=white,colframe=black,width=\textwidth,arc=0pt]
+    An example for a DFA is $M = (\Sigma,Z,\delta,z_0,F)$ where:
+    \[
+        \begin{aligned}
+            \Sigma &= \{0,1\}, \\[1ex]
+            Z &= \{z_0,z_1,z_2,z_3\} \\[1ex]
+            F &= \{z_2\} \\[1ex]
+            &\delta: \begin{tabular}{|c||c|c|c|c|}
+                \hline
+                $\delta$ & $z_0$ & $z_1$ & $z_2$ & $z_3$ \\
+                \hline
+                \hline
+                0 & $z_1$ & $z_3$ & $z_2$ & $z_3$ \\
+                \hline
+                1 & $z_3$ & $z_2$ & $z_2$ & $z_3$ \\
+                \hline
+            \end{tabular}
+        \end{aligned}
+    \]
+\end{tcolorbox}
+\subsection{How a DFA works DFA的工作原理}
+A DFA $M = (\Sigma,Z,\delta,z_0,F)$ accepts or rejects an input $x$ as follows:
+\begin{itemize}
+    \item $M$ starts at the initial state $z_0$ and executes a total of $|x|$ steps.
+    \item The read head moves from left to right over the input word $x$, symbol by symbol, and changes its state according to the transition function $\delta$: If $M$ is in state $z \in Z$ and reads the symbol $a \in Sigma$ and $\delta(z,a) = z'$ holds, then $M$ changes its state to $z'$.
+    \item Is the last reached state (after $x$ has been processed)
+    \subitem a final state, then $M$ accepts the input $x$.
+    \subitem not a final state, then $M$ rejects the input $x$.
+\end{itemize}
+\subsection{State graph of DFA DFA的状态图}
+page 16 of 276
 
 
 
